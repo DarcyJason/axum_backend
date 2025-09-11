@@ -1,6 +1,6 @@
 use serde_json::{Value, json};
 
-use crate::{errors::app_error::AppResult, response::ApiResponse};
+use crate::{dtos::api_response::ApiResponse, errors::app_error::AppResult};
 
 #[utoipa::path(
     get,

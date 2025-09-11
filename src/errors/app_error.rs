@@ -5,7 +5,7 @@ use axum::{
 };
 use thiserror::Error;
 
-use crate::response::ApiResponse;
+use crate::dtos::api_response::ApiResponse;
 
 #[derive(Debug, Error)]
 pub enum AppError {

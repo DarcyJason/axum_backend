@@ -1,4 +1,4 @@
-use axum_backend::{logger::init_logger, run};
+use axum_backend::{observability::logger::init_logger, run};
 use dotenvy::dotenv;
 use tracing::error;
 
