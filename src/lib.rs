@@ -1,0 +1,22 @@
+pub mod ai;
+pub mod app;
+pub mod config;
+pub mod constants;
+pub mod database;
+pub mod dtos;
+pub mod errors;
+pub mod handlers;
+pub mod logger;
+pub mod mail;
+pub mod middlewares;
+pub mod models;
+pub mod repositories;
+pub mod response;
+pub mod routes;
+pub mod security;
+pub mod services;
+pub mod state;
+pub mod traffic;
+pub mod utils;
+
+pub use app::run;

@@ -1,0 +1,39 @@
+[package]
+name = "axum_backend"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+anyhow = "1.0.99"
+argon2 = "0.5.3"
+async-trait = "0.1.89"
+axum = { version = "0.8.4" }
+chrono = { version = "0.4.41", features = ["serde"] }
+dotenvy = "0.15.7"
+figment = { version = "0.10.19", features = ["env", "toml"] }
+jsonwebtoken = "9.3.1"
+lettre = "0.11.18"
+openssl = "0.10.73"
+serde = { version = "1.0.219", features = ["derive"] }
+serde_json = "1.0.142"
+sqlx = { version = "0.8.6", features = [
+  "chrono",
+  "postgres",
+  "runtime-tokio",
+  "uuid",
+] }
+thiserror = "2.0.15"
+tokio = { version = "1.47.1", features = ["full"] }
+tower = "0.5.2"
+tower-http = { version = "0.6.6", features = ["trace", "cors"] }
+tracing = "0.1.41"
+tracing-appender = "0.2.3"
+tracing-subscriber = { version = "0.3.19", features = ["env-filter", "fmt"] }
+utoipa = { version = "5.4.0", features = ["axum_extras"] }
+utoipa-axum = "0.2.0"
+utoipa-rapidoc = { version = "6.0.0", features = ["axum"] }
+utoipa-redoc = { version = "6.0.0", features = ["axum"] }
+utoipa-scalar = { version = "0.3.0", features = ["axum"] }
+utoipa-swagger-ui = { version = "9.0.2", features = ["axum", "reqwest"] }
+uuid = { version = "1.18.0", features = ["serde", "v4"] }
+validator = { version = "0.20.0", features = ["derive"] }
