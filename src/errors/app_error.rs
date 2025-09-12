@@ -11,8 +11,8 @@ use crate::dtos::api_response::ApiResponse;
 pub enum AppError {
     #[error("Configuration error: {0}")]
     ConfigError(Box<figment::Error>),
-    #[error("PostgreSQL error: {0}")]
-    PostgresError(#[from] sqlx::Error),
+    #[error("SurrealDB error: {0}")]
+    SurrealDBError(Box<surrealdb::Error>),
     #[error("IO error: {0}")]
     IOError(#[from] std::io::Error),
     #[error("Other error: {0}")]
@@ -22,6 +22,12 @@ pub enum AppError {
 impl From<figment::Error> for AppError {
     fn from(err: figment::Error) -> Self {
         AppError::ConfigError(Box::new(err))
+    }
+}
+
+impl From<surrealdb::Error> for AppError {
+    fn from(err: surrealdb::Error) -> Self {
+        AppError::SurrealDBError(Box::new(err))
     }
 }
 
@@ -37,7 +43,7 @@ impl IntoResponse for AppError {
             AppError::ConfigError(err) => {
                 (StatusCode::INTERNAL_SERVER_ERROR, 1001, err.to_string())
             }
-            AppError::PostgresError(err) => {
+            AppError::SurrealDBError(err) => {
                 (StatusCode::INTERNAL_SERVER_ERROR, 1002, err.to_string())
             }
             AppError::IOError(err) => (StatusCode::INTERNAL_SERVER_ERROR, 1003, err.to_string()),

@@ -1,12 +1,12 @@
-use sqlx::{Pool, Postgres};
+use surrealdb::{Surreal, engine::remote::ws::Client};
 
 #[derive(Debug, Clone)]
 pub struct DBClient {
-    pub pg_pool: Pool<Postgres>,
+    surrealdb: Surreal<Client>,
 }
 
 impl DBClient {
-    pub fn new(pg_pool: Pool<Postgres>) -> Self {
-        DBClient { pg_pool }
+    pub fn new(surrealdb: Surreal<Client>) -> Self {
+        DBClient { surrealdb }
     }
 }

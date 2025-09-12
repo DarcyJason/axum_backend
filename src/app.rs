@@ -17,7 +17,7 @@ use utoipa_swagger_ui::SwaggerUi;
 use crate::{
     config::Config,
     constants::logo::LOGO,
-    database::{client::DBClient, init::init_postgres},
+    database::{client::DBClient, init::init_surrealdb},
     errors::app_error::AppResult,
     routes::create_routes,
     security::cors::cors,
@@ -55,8 +55,8 @@ pub async fn run() -> AppResult<()> {
         error!("Failed to initialize config: {}", e);
         e
     })?;
-    let pg_pool = init_postgres(config.clone()).await;
-    let db_client = DBClient::new(pg_pool);
+    let surrealdb_client = init_surrealdb(config.clone()).await?;
+    let db_client = DBClient::new(surrealdb_client);
     let port = config.clone().backend_server.backend_port;
     let frontend_address = config.clone().frontend_server.frontend_address;
 

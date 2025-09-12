@@ -1,18 +1,20 @@
-use crate::config::Config;
-use sqlx::{Pool, Postgres, postgres::PgPoolOptions};
-use tracing::error;
+use surrealdb::{
+    Surreal,
+    engine::remote::ws::{Client, Ws},
+    opt::auth::Root,
+};
 
-pub async fn init_postgres(config: Config) -> Pool<Postgres> {
-    let pg_address = &config.clone().postgres_server.postgres_database_url;
-    match PgPoolOptions::new()
-        .max_connections(10)
-        .connect(pg_address)
-        .await
-    {
-        Ok(pool) => pool,
-        Err(err) => {
-            error!("Failed to connect to PostgreSQL: {}", err);
-            std::process::exit(1)
-        }
-    }
+use crate::{config::Config, errors::app_error::AppResult};
+
+pub async fn init_surrealdb(config: Config) -> AppResult<Surreal<Client>> {
+    let db = Surreal::new::<Ws>(config.surrealdb_server.surrealdb_host).await?;
+    db.signin(Root {
+        username: &config.surrealdb_server.surrealdb_root_name,
+        password: &config.surrealdb_server.surrealdb_root_password,
+    })
+    .await?;
+    db.use_ns(config.surrealdb_server.surrealdb_namespace)
+        .use_db(config.surrealdb_server.surrealdb_database)
+        .await?;
+    Ok(db)
 }
