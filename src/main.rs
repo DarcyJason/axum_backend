@@ -1,4 +1,4 @@
-use axum_backend::{observability::logger::init_logger, run};
+use axum_backend::{observability::log::init_log, run};
 use dotenvy::dotenv;
 use tracing::error;
 
@@ -6,7 +6,7 @@ use tracing::error;
 async fn main() {
     dotenv().ok();
 
-    let _guard = init_logger();
+    let _guard = init_log();
 
     if let Err(e) = run().await {
         error!("Application failed to start: {}", e);

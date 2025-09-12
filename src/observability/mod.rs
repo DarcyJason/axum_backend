@@ -1,3 +1,3 @@
-pub mod logger;
+pub mod log;
 pub mod metrics;
-pub mod tracing;
+pub mod trace;
