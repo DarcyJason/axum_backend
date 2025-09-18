@@ -1,6 +1,5 @@
 use crate::{config::Config, database::client::DBClient};
 
-#[derive(Debug, Clone)]
 pub struct AppState {
     pub config: Config,
     pub db_client: DBClient,

@@ -5,15 +5,15 @@ use serde::{Deserialize, Serialize};
 use crate::errors::app_error::AppResult;
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct BackendServerConfig {
-    pub backend_port: u16,
+pub struct RedisServerConfig {
+    pub redis_address: String,
 }
 
-impl BackendServerConfig {
+impl RedisServerConfig {
     fn figment() -> Figment {
         Figment::new().merge(Env::prefixed(""))
     }
     pub fn init() -> AppResult<Self> {
-        Ok(BackendServerConfig::figment().extract()?)
+        Ok(RedisServerConfig::figment().extract()?)
     }
 }

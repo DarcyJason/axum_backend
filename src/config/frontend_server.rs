@@ -1,4 +1,5 @@
-use figment::{Figment, providers::Env};
+use figment::Figment;
+use figment::providers::Env;
 use serde::{Deserialize, Serialize};
 
 use crate::errors::app_error::AppResult;

@@ -12,9 +12,9 @@ use crate::{dtos::api_response::ApiResponse, errors::app_error::AppResult};
             description = "The server is up and running",
             body = ApiResponse<Value>,
             example = r#"{
-                "status": success,
-                "message": "The server is up and running",
+                "status": "success",
                 "code": 200,
+                "message": "The server is up and running",
                 "data": {}
             }"#
         )

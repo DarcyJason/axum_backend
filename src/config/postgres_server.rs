@@ -5,15 +5,16 @@ use serde::{Deserialize, Serialize};
 use crate::errors::app_error::AppResult;
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct BackendServerConfig {
-    pub backend_port: u16,
+pub struct PostgresServerConfig {
+    pub postgres_host: String,
+    pub postgres_user: String,
 }
 
-impl BackendServerConfig {
+impl PostgresServerConfig {
     fn figment() -> Figment {
         Figment::new().merge(Env::prefixed(""))
     }
     pub fn init() -> AppResult<Self> {
-        Ok(BackendServerConfig::figment().extract()?)
+        Ok(PostgresServerConfig::figment().extract()?)
     }
 }
