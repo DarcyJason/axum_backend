@@ -1,9 +1,10 @@
 use axum_backend::config::Config;
 use axum_backend::constants::logo::LOGO;
+use axum_backend::custom::result::AppResult;
 use axum_backend::database::client::DBClient;
-use axum_backend::errors::app_error::AppResult;
 use axum_backend::observability::log::init_log;
 use axum_backend::routes::create_routes;
+use axum_backend::security::cors::cors;
 use axum_backend::state::AppState;
 use dotenvy::dotenv;
 use std::net::{Ipv4Addr, SocketAddr};
@@ -11,7 +12,6 @@ use std::sync::Arc;
 use tokio::net::TcpListener;
 use tokio::signal;
 use tracing::{error, info};
-use axum_backend::security::cors::cors;
 
 #[tokio::main]
 async fn main() -> AppResult<()> {
@@ -22,7 +22,7 @@ async fn main() -> AppResult<()> {
         error!("Failed to initialize config: {}", e);
         e
     })?;
-    let db_client = DBClient::new(config.clone());
+    let db_client = DBClient::new(config.clone()).await?;
     let port = config.backend_server.backend_port;
     let frontend_address = config.frontend_server.frontend_address.clone();
     info!("The backend server is running at http://localhost:{}", port);
@@ -62,5 +62,6 @@ async fn shutdown_signal() {
     tokio::select! {
         _ = ctrl_c => {},
     }
+    println!();
     info!("Signal received, starting graceful shutdown");
 }

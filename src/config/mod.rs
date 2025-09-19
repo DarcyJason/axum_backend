@@ -2,13 +2,11 @@ use serde::{Deserialize, Serialize};
 
 use crate::config::postgres_server::PostgresServerConfig;
 use crate::config::redis_server::RedisServerConfig;
-use crate::{
-    config::{
-        backend_server::BackendServerConfig, frontend_server::FrontendServerConfig,
-        mail_server::MailServerConfig,
-    },
-    errors::app_error::AppResult,
+use crate::config::{
+    backend_server::BackendServerConfig, frontend_server::FrontendServerConfig,
+    mail_server::MailServerConfig,
 };
+use crate::custom::result::AppResult;
 
 pub mod backend_server;
 pub mod frontend_server;

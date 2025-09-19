@@ -1,9 +1,9 @@
 pub mod ai;
 pub mod config;
 pub mod constants;
+pub mod custom;
 pub mod database;
 pub mod dtos;
-pub mod errors;
 pub mod handlers;
 pub mod mail;
 pub mod middlewares;

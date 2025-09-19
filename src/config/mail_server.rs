@@ -1,7 +1,7 @@
 use figment::{Figment, providers::Env};
 use serde::{Deserialize, Serialize};
 
-use crate::errors::app_error::AppResult;
+use crate::custom::result::AppResult;
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct MailServerConfig {

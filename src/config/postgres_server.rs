@@ -2,12 +2,11 @@ use figment::Figment;
 use figment::providers::Env;
 use serde::{Deserialize, Serialize};
 
-use crate::errors::app_error::AppResult;
+use crate::custom::result::AppResult;
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct PostgresServerConfig {
-    pub postgres_host: String,
-    pub postgres_user: String,
+    pub postgres_address: String,
 }
 
 impl PostgresServerConfig {

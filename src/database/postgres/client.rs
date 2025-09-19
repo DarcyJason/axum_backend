@@ -1,19 +1,17 @@
-use r2d2::Pool;
-use r2d2_postgres::{postgres::NoTls, PostgresConnectionManager};
-use crate::config::postgres_server::PostgresServerConfig;
+use sqlx::{Pool, Postgres, postgres::PgPoolOptions};
+
+use crate::{config::postgres_server::PostgresServerConfig, custom::result::AppResult};
 
 pub struct PostgresClient {
-    pool: Pool<PostgresConnectionManager<NoTls>>,
+    pub conn: Pool<Postgres>,
 }
 
 impl PostgresClient {
-    pub fn new(postgres_server_config: PostgresServerConfig) -> Self {
-        let connection_information = format!("host={} user={}", postgres_server_config.postgres_host, postgres_server_config.postgres_user);
-        let manager = PostgresConnectionManager::new(
-            connection_information.parse().unwrap(),
-            NoTls,
-        );
-        let pool = Pool::builder().build(manager).unwrap();
-        PostgresClient { pool }
+    pub async fn new(postgres_server_config: PostgresServerConfig) -> AppResult<Self> {
+        let conn = PgPoolOptions::new()
+            .max_connections(10)
+            .connect(&postgres_server_config.postgres_address)
+            .await?;
+        Ok(PostgresClient { conn })
     }
 }

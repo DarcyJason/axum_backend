@@ -1,6 +1,6 @@
-use serde_json::{Value, json};
+use serde_json::Value;
 
-use crate::{dtos::api_response::ApiResponse, errors::app_error::AppResult};
+use crate::custom::responder::ApiResponse;
 
 #[utoipa::path(
     get,
@@ -14,15 +14,12 @@ use crate::{dtos::api_response::ApiResponse, errors::app_error::AppResult};
             example = r#"{
                 "status": "success",
                 "code": 200,
-                "message": "The server is up and running",
-                "data": {}
+                "message": "The server is healthy",
+                "data": null
             }"#
         )
     )
 )]
-pub async fn health_handler() -> AppResult<ApiResponse<Value>> {
-    Ok(ApiResponse::success(
-        "The server is up and running",
-        json!({}),
-    ))
+pub async fn health_handler() -> ApiResponse<()> {
+    ApiResponse::success("The server is healthy".to_string(), ())
 }
