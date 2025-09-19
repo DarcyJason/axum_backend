@@ -6,6 +6,8 @@ use axum::{
 use serde::Serialize;
 use utoipa::ToSchema;
 
+use crate::custom::errors::app_error::AppError;
+
 #[derive(Debug, Serialize, ToSchema)]
 pub struct ApiResponse<T> {
     pub status: String,
@@ -38,10 +40,24 @@ where
     T: Serialize,
 {
     fn into_response(self) -> Response {
-        let status = match StatusCode::from_u16(self.code) {
-            Ok(code) => code,
-            Err(_) => StatusCode::INTERNAL_SERVER_ERROR,
-        };
-        (status, Json(self)).into_response()
+        match StatusCode::from_u16(self.code) {
+            Ok(code) => (code, Json(self)).into_response(),
+            Err(_) => (
+                StatusCode::INTERNAL_SERVER_ERROR,
+                Json(ApiResponse::<()>::error(
+                    StatusCode::INTERNAL_SERVER_ERROR,
+                    "Internal Server Error".to_string(),
+                )),
+            )
+                .into_response(),
+        }
+    }
+}
+
+impl IntoResponse for AppError {
+    fn into_response(self) -> Response {
+        let (status_code, message) = self.status_code();
+        let api_response: ApiResponse<()> = ApiResponse::error(status_code, message);
+        (status_code, Json(api_response)).into_response()
     }
 }

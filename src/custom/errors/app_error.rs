@@ -1,11 +1,8 @@
-use axum::Json;
 use axum::http::StatusCode;
-use axum::response::{IntoResponse, Response};
 use thiserror::Error;
 
 use crate::custom::errors::password::PasswordError;
 use crate::custom::errors::validation::ValidationError;
-use crate::custom::responder::ApiResponse;
 
 #[derive(Debug, Error)]
 pub enum AppError {
@@ -53,13 +50,5 @@ impl AppError {
             AppError::IOError(err) => (StatusCode::INTERNAL_SERVER_ERROR, err.to_string()),
             AppError::OtherError(err) => (StatusCode::INTERNAL_SERVER_ERROR, err.to_string()),
         }
-    }
-}
-
-impl IntoResponse for AppError {
-    fn into_response(self) -> Response {
-        let (status_code, message) = self.status_code();
-        let api_response: ApiResponse<()> = ApiResponse::error(status_code, message);
-        (status_code, Json(api_response)).into_response()
     }
 }
