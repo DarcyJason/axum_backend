@@ -28,7 +28,6 @@ impl AppError {
             AppError::ConfigError(err) => (StatusCode::INTERNAL_SERVER_ERROR, err.to_string()),
             AppError::ValidationError(err) => match err {
                 ValidationError::InvalidEmail => (StatusCode::BAD_REQUEST, err.to_string()),
-                ValidationError::InvalidUsername => (StatusCode::BAD_REQUEST, err.to_string()),
                 ValidationError::EmptyField(_) => (StatusCode::BAD_REQUEST, err.to_string()),
             },
             AppError::PasswordError(err) => match err {
